@@ -1,1 +1,1 @@
-import Fotd.Basic
+def hello := "world"
