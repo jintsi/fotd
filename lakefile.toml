@@ -1,5 +1,5 @@
 name = "fotd"
-defaultTargets = ["Fotd"]
+defaultTargets = ["FOTD"]
 reservoir = false
 
 [leanOptions]
