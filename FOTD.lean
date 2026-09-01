@@ -180,7 +180,7 @@ theorem fotd94 {c : EuclideanSpace ℝ (Fin 3)} {r : ℝ} (h : 0 < r) :
   suffices Uncountable (Set.Ico 0 (2 * Real.pi)) by
     apply Function.Injective.uncountable (α := Set.Ico 0 (2 * Real.pi)); swap
     · intro θ
-      use c + .toLp _ (Fin.cons 0 ((finTwoArrowEquiv ℝ).symm (Complex.equivRealProd (circleMap 0 r θ))))
+      use c + !₂[0, (circleMap 0 r θ).re, (circleMap 0 r θ).im]
       simp [EuclideanSpace.norm_eq, Fin.sum_univ_three, sq, ← Complex.normSq_apply,
         ← Complex.norm_def]; exact h.le
     · intro θ₁ θ₂; simp
@@ -219,7 +219,7 @@ theorem fotd178 : ∫ _ in false.toNat..true.toNat, (true.toNat : ℝ) = true.to
 theorem fotd179 : Real.cos false.toNat = true.toNat := by simp
 
 /-- Fact Of The Day 183: Euler's number, denoted as e, is greater than -48367193 -/
-theorem fotd183 : -48367193 < Real.exp 0 := by trans 0 <;> simp
+theorem fotd183 : -48367193 < Real.exp 1 := by trans 0; simp; positivity
 
 /-- Fact Of The Day 188: The word "palindrome" is heterological. -/
 theorem fotd188 : ¬"palindrome".toList.Palindrome := by decide
