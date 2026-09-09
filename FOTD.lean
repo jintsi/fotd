@@ -243,8 +243,13 @@ theorem fotd202 : Infinite ℤ → ∃ z, z = 25 := by simp
 
 /-! TODO: FOTD 214 (area of a sphere/cube) -/
 
-theorem fotd218 (thisSentence : String) : thisSentence.length = 1 → thisSentence.toList.Palindrome := by
-  rw [String.length, List.length_eq_one_iff]; rintro ⟨c, h⟩; rw [h]; apply List.Palindrome.singleton
+/-- Fact Of The Day 218: If you translate this sentence into a language such that it is just one
+symbol long, it would be a palindrome. -/
+theorem fotd218 (thisSentence : String) : thisSentence.length = 1 →
+    thisSentence.toList.Palindrome := by
+  rw [String.length, List.length_eq_one_iff]
+  rintro ⟨c, h⟩; rw [h]; apply List.Palindrome.singleton
 
+/-- Fact Of The Day 224: Zero is not equal to the set of natural numbers. -/
 theorem fotd224 : Ordinal.toZFSet 0 ≠ ZFSet.omega := by
   symm; simp [ZFSet.eq_empty]; use ∅; exact ZFSet.omega_zero
