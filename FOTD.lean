@@ -242,3 +242,9 @@ twenty five. -/
 theorem fotd202 : Infinite ℤ → ∃ z, z = 25 := by simp
 
 /-! TODO: FOTD 214 (area of a sphere/cube) -/
+
+theorem fotd218 (thisSentence : String) : thisSentence.length = 1 → thisSentence.toList.Palindrome := by
+  rw [String.length, List.length_eq_one_iff]; rintro ⟨c, h⟩; rw [h]; apply List.Palindrome.singleton
+
+theorem fotd224 : Ordinal.toZFSet 0 ≠ ZFSet.omega := by
+  symm; simp [ZFSet.eq_empty]; use ∅; exact ZFSet.omega_zero
