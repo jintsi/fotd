@@ -1,5 +1,6 @@
 import Mathlib.Analysis.RCLike.Sqrt
 import Mathlib.SetTheory.ZFC.Ordinal
+import FOTD.Time
 import Mathlib.Analysis.SpecialFunctions.Complex.CircleMap
 import Mathlib.Analysis.Real.Cardinality
 import Mathlib.Data.Nat.Prime.Nth
@@ -140,32 +141,17 @@ theorem fotd72 (h : n ≤ 8) : ∃ b, String.ofList ((10 - n).toDigits b) = "10"
 
 /-! TODO: FOTD 84 -/
 
-/-
-@[simp]
-theorem Std.Time.PlainDate.toEpochDay_ofEpochDay {day : Day.Offset} :
-    (ofEpochDay day).toEpochDay = day := by sorry
-
 open Std.Time in
 /-- Fact Of The Day 87: The midnight that starts the upcoming Friday will never be any more than
 168 hours away, as long as you do not switch timezones while you are waiting. -/
 theorem fotd87 {now : PlainDateTime} :
-    ((now.date + (1 : Day.Offset)).withWeekday .friday).atTime .midnight - now
+    ((now.date.addDays 1).withWeekday .friday).atTime .midnight - now
     ≤ (168 : Hour.Offset) := by
-  rcases now with ⟨date, time⟩; dsimp
-  have h1 : ((date + (1 : Day.Offset)).withWeekday .friday).toEpochDay ≤ date.toEpochDay + 7 := by
-    change ((date.addDays 1).withWeekday _).toEpochDay ≤ _
-    unfold PlainDate.withWeekday PlainDate.addDays; simp
-    change _ + 1 + Internal.Bounded.LE.toInt _ ≤ _ + (1 + 6)
-    rw [Int.add_assoc]; gcongr
-    exact (_ : Internal.Bounded.LE _ _).2.2
-  change PlainDateTime.toWallTime _ - PlainDateTime.toWallTime _ ≤ (168 : Hour.Offset)
-  unfold PlainDate.atTime PlainDateTime.toWallTime; simp
-  conv => lhs; lhs; arg 1; arg 1; change (_ + 0) * 1000000000 + 0
-  simp [Internal.UnitVal.mul]
-  change (Duration.ofNanoseconds _).sub (Duration.ofNanoseconds _) ≤ _
--/
-
-/-! TODO: FOTD 87 (time library verification) -/
+  rcases now with ⟨date, time⟩; simp; grw [← time.toWallTime_nonneg, add_zero, add_comm]
+  unfold PlainDate.withWeekday; dsimp
+  simp [Duration.le_iff, add_assoc, ← mul_assoc,
+    Second.Offset.toNanoseconds, Day.Offset.toSeconds, Day.Offset.ofInt, Hour.Offset.toSeconds]
+  grw [Internal.Bounded.LE.toInt_le]; rfl
 
 /-- Fact Of The Day 94: You can use a sphere as a dice with Aleph 1 possible results. Or Aleph 2.
 Or Aleph 3. Nobody knows. -/
