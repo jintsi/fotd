@@ -1,3 +1,4 @@
+import FOTD.HairyBallTheorem
 import Mathlib.Analysis.RCLike.Sqrt
 import Mathlib.SetTheory.ZFC.Ordinal
 import FOTD.Time
@@ -59,7 +60,17 @@ theorem fotd16 (p q : Nat.Primes) (ne : p ≠ q) : Nat.Coprime p q :=
 /-- Fact Of The Day 17: Gain i dollars every day and in i days you will owe one dollar. -/
 theorem fotd17 : Complex.I * Complex.I = -1 := Complex.I_mul_I
 
-/-! TODO: FOTD 20 (hairy ball theorem) -/
+open scoped RealInnerProductSpace in
+/-- Fact Of The Day 20: There is always a place on Earth that doesn't have horizontal wind. -/
+theorem fotd20 {c : EuclideanSpace ℝ (Fin 3)} {r : ℝ} (hr : 0 < r)
+    {wind : Metric.sphere c r → EuclideanSpace ℝ (Fin 3)} (continuous : Continuous wind)
+    (horizontal : ∀ x, ⟪wind x, x - c⟫ = 0) : ∃ x, wind x = 0 := by
+  let wind' (x : unitSphere 3) := wind ⟨c + r • x, by simp [norm_smul, hr.le]⟩
+  have ⟨x', hx'⟩ := hairy_ball 3 (by simp) ⟨1, rfl⟩ (v := wind')
+    (by unfold wind'; fun_prop) fun x => by
+      rw [← mul_eq_zero_iff_left hr.ne', ← inner_smul_right]
+      convert horizontal _; simp
+  use! c + r • x'
 
 /-- Fact Of The Day 26: There's the same amount of primes and composites. -/
 theorem fotd26 : Cardinal.mk Nat.Primes = Cardinal.mk {n | ¬Nat.Prime n} := by
