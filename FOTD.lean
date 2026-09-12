@@ -148,7 +148,7 @@ change your base to how many balls there are. -/
 theorem fotd72 (h : n ≤ 8) : ∃ b, String.ofList ((10 - n).toDigits b) = "10" := by
   use 10 - n
   rw [Nat.toDigits_of_base_le (by omega) le_rfl, Nat.div_self (by omega),
-    Nat.toDigits_of_lt_base (by omega)]; simp; rfl
+    Nat.toDigits_of_lt_base (by omega)]; simp [Nat.digitChar]
 
 /-! TODO: FOTD 84 -/
 
@@ -187,7 +187,8 @@ theorem fotd94 {c : EuclideanSpace ℝ (Fin 3)} {r : ℝ} (h : 0 < r) :
     (by simpa [Cardinal.mk_Ico_real, Real.pi_pos] using Cardinal.aleph0_lt_continuum)
 
 /-- Fact Of The Day 100: 100 is the square root of a whole number. -/
-theorem fotd100 : ∃ n, 100 * 100 = n := ⟨_, rfl⟩
+theorem fotd100 : ∃ n : ℕ, 100 = Real.sqrt n :=
+  ⟨100 ^ 2, by rw [Nat.cast_pow, Real.sqrt_sq] <;> simp⟩
 
 /-- Fact Of The Day 101: !false = false! -/
 theorem fotd101 : (!false).toNat = Nat.factorial false.toNat := rfl
