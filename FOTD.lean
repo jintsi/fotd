@@ -187,7 +187,7 @@ theorem fotd94 {c : EuclideanSpace ℝ (Fin 3)} {r : ℝ} (h : 0 < r) :
     (by simpa [Cardinal.mk_Ico_real, Real.pi_pos] using Cardinal.aleph0_lt_continuum)
 
 /-- Fact Of The Day 100: 100 is the square root of a whole number. -/
-theorem fotd100 : ∃ n : ℕ, 100 = Real.sqrt n :=
+theorem fotd100 : ∃ n : ℕ, Real.sqrt n = 100 :=
   ⟨100 ^ 2, by rw [Nat.cast_pow, Real.sqrt_sq] <;> simp⟩
 
 /-- Fact Of The Day 101: !false = false! -/
@@ -226,8 +226,8 @@ theorem fotd188 : ¬"palindrome".toList.Palindrome := by decide
 
 /-- Fact Of The Day 198: Any two different points are parallel. -/
 theorem fotd198 [Ring k] [AddCommGroup V] [Module k V] [AddTorsor V P] {p₁ p₂ : P} :
-    (affineSpan k {p₁}).Parallel (affineSpan k {p₂}) := by
-  simp [AffineSubspace.affineSpan_parallel_iff_vectorSpan_eq_and_eq_empty_iff_eq_empty]
+    AffineSubspace.Parallel (k := k) {p₁} {p₂} := by
+  simp [AffineSubspace.parallel_iff_direction_eq_and_eq_bot_iff_eq_bot]
 
 /-- Fact Of The Day 199: The length measure of the set of rational numbers is rational. -/
 theorem fotd199 : (MeasureTheory.volume (Set.range ((↑) : ℚ → ℝ))).toEReal ∈
@@ -251,3 +251,9 @@ theorem fotd218 (thisSentence : String) : thisSentence.length = 1 →
 /-- Fact Of The Day 224: Zero is not equal to the set of natural numbers. -/
 theorem fotd224 : Ordinal.toZFSet 0 ≠ ZFSet.omega := by
   symm; simp [ZFSet.eq_empty]; use ∅; exact ZFSet.omega_zero
+
+/-! TODO: FOTD 228 (triangle packing) -/
+
+/-- Fact Of The Day 239: The text "Artificial intelligence" contains every letter a giraffe needs
+for survival. -/
+theorem fotd239 : ∀ c ∈ "giraffe".toList, "Artificial intelligence".contains c := by simp
