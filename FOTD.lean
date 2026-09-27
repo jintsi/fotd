@@ -134,7 +134,7 @@ theorem fotd51 : IsEmpty (Set.Iio (Ordinal.omega.{u} 1) ↪o ℝ) := by
   grw [← Rat.cast_lt (K := ℝ), h', ← h, f.le_iff_le, Order.succ_le_iff]; assumption
 
 /-- Fact Of The Day 54: "Strawberry" has some letters in it. -/
-theorem fotd54 : ∃ c : Char, "strawberry".contains c := ⟨'s', by simp⟩
+theorem fotd54 : ∃ c : Char, "strawberry".contains c := by simp
 
 /-- Fact Of The Day 60: "Snow is white" if, and only if, snow is white. -/
 theorem fotd60 {snow : α} {IsWhite : α → Prop} : IsWhite snow ↔ IsWhite snow := Iff.rfl
@@ -191,7 +191,7 @@ theorem fotd100 : ∃ n : ℕ, Real.sqrt n = 100 :=
   ⟨100 ^ 2, by rw [Nat.cast_pow, Real.sqrt_sq] <;> simp⟩
 
 /-- Fact Of The Day 101: !false = false! -/
-theorem fotd101 : (!false).toNat = Nat.factorial false.toNat := rfl
+theorem fotd101 : (!false).toNat = false.toNat.factorial := rfl
 
 /-- Fact Of The Day 102: prime1(prime3)+prime4=prime7
 
@@ -257,3 +257,6 @@ theorem fotd224 : Ordinal.toZFSet 0 ≠ ZFSet.omega := by
 /-- Fact Of The Day 239: The text "Artificial intelligence" contains every letter a giraffe needs
 for survival. -/
 theorem fotd239 : ∀ c ∈ "giraffe".toList, "Artificial intelligence".contains c := by simp
+
+/-- Fact Of The Day 243: Fotd be like: 74+86-3=157 -/
+theorem fotd243 : 74 + 86 - 3 = 157 := rfl
