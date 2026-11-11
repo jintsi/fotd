@@ -1,6 +1,7 @@
 name = "fotd"
 defaultTargets = ["FOTD"]
 reservoir = false
+allowNonModules = true
 
 [leanOptions]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`

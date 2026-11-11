@@ -260,3 +260,36 @@ theorem fotd239 : ∀ c ∈ "giraffe".toList, "Artificial intelligence".contains
 
 /-- Fact Of The Day 243: Fotd be like: 74+86-3=157 -/
 theorem fotd243 : 74 + 86 - 3 = 157 := rfl
+
+/-- Fact Of The Day 244: 74+86-3=157 -/
+theorem fotd244 : 74 + 86 - 3 = 157 := rfl
+
+/-- Fact Of The Day 248: The Intersected States Of America, defined as the intersection of all the
+USA states, despite not being recognised as a country, has every metre of its claimed land
+universally recognised as its legal territory. -/
+theorem fotd248 {states : ι → Set α} [Nontrivial ι]
+    (disj : Pairwise (Function.onFun Disjoint states)) {recognized : α → Prop} :
+    ∀ x ∈ Set.iInter states, recognized x := by
+  intro x hx; exfalso; revert hx; simp
+  have ⟨a, b, h⟩ := exists_pair_ne ι
+  have := by simpa [Function.onFun, Set.disjoint_left, ← not_and, not_and_or] using disj h
+  specialize @this x; tauto
+
+/-- Fact Of The Day 249: The amount of FoTDs that rely on every element of the empty set having
+a specific property is increasing over time and so does the total number of deaths. -/
+theorem fotd249 {vacuously_true : ℕ → Prop} [DecidablePred vacuously_true] :
+    Monotone (Nat.count vacuously_true) := Nat.count_monotone _
+
+/-- Fact Of The Day 257: Boiling something for a total of a rational number of seconds is much
+harder than people would have thought a while ago. -/
+theorem fotd257 : MeasureTheory.volume (Set.range Rat.cast : Set ℝ) = 0 :=
+  (Set.countable_range _).measure_zero _
+
+/-- Fact Of The Day 268: 31 is the only prime if you declare all primes equal. -/
+theorem fotd268 : Subsingleton Nat.Primes → ∀ p, Nat.Prime p → p = 31 := by
+  intro h; cases false_of_nontrivial_of_subsingleton Nat.Primes
+
+/-- Fact Of The Day 273: The set of all sets that contain themselves exists in ZFC. -/
+theorem fotd273 : ∃ s : ZFSet, ∀ t, t ∈ s ↔ t ∈ t := by use ∅; simp [ZFSet.mem_irrefl]
+
+/-! TODO: FOTD 279  -/

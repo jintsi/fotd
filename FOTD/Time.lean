@@ -59,6 +59,12 @@ theorem val_cast {h : α = β} {u : UnitVal α} : (u.cast h).val = u.val := rfl
 
 end Internal.UnitVal
 
+@[simp]
+theorem Day.Offset.val_add {d1 d2 : Day.Offset} : (d1 + d2).val = d1.val + d2.val := rfl
+
+@[simp]
+theorem Second.Offset.val_add {s1 s2 : Second.Offset} : (s1 + s2).val = s1.val + s2.val := rfl
+
 set_option allowUnsafeReducibility true in
 attribute [reducible] Nanosecond.Span
 
@@ -182,7 +188,7 @@ namespace PlainDate
 @[simp]
 theorem toWallTime_addDays {date : PlainDate} {d : Day.Offset} :
     (date.addDays d).toWallTime.val = date.toWallTime.val + d := by
-  ext; simp [toWallTime, addDays, Second.Offset.toNanoseconds, Day.Offset.toSeconds, mul_add]
+  ext; simp [toWallTime, addDays, Second.Offset.toNanoseconds, Day.Offset.toSeconds, Day.Offset.val_add, mul_add]
 
 @[simp]
 theorem atTime_eq {date : PlainDate} {time : PlainTime} : date.atTime time = ⟨date, time⟩ := rfl
@@ -195,7 +201,7 @@ namespace PlainDateTime
 theorem toWallTime_mk {date : PlainDate} {time : PlainTime} :
     (mk date time).toWallTime.val = date.toWallTime.val + time.toWallTime.val := by
   unfold toWallTime PlainDate.toWallTime PlainTime.toWallTime; ext
-  simp [mul_add, Second.Offset.toNanoseconds, add_assoc]
+  simp [Second.Offset.val_add, mul_add, Second.Offset.toNanoseconds, add_assoc]
   unfold PlainTime.toNanoseconds PlainTime.toSeconds
   change _ * (_ + _ + _) + _ = _ + _ + _ + time.nanosecond.val
   simp [mul_add, Hour.Offset.toSeconds, Minute.Offset.toSeconds, Hour.Offset.toNanoseconds,

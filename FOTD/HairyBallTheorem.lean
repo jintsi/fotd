@@ -17,7 +17,7 @@ open scoped BigOperators
 variable (n : ℕ) (n_pos : 0 < n) (hn : 1 < n) (odd_n : Odd n)
 
 local notation3 "E" n:1023 => EuclideanSpace ℝ (Fin n)
-abbrev unitSphere := Metric.sphere (0 : E n) 1
+noncomputable abbrev unitSphere := Metric.sphere (0 : E n) 1
 
 structure IsExtensionOfVectorFieldOnSn (v : E n → E n) where
   isCont : Continuous v
@@ -216,7 +216,7 @@ include vContDiff hs in
 /-- f' t x is the (strict) derivative of f t at x ∈ A -/
 lemma HairyBallTheorem.ftStrictDeriv (t : ℝ) : ∀ x ∈ A, HasStrictFDerivAt (f t) (f' t x) x :=
   fun x hx => (hasStrictFDerivAt_id x).add
-    (((vContDiff.contDiffAt (nhds_le_nhdsSet hx hs)).hasStrictFDerivAt one_ne_zero).const_smul t)
+    (((vContDiff.contDiffAt (nhds_le_nhdsSet hx hs)).hasStrictFDerivAt_fderiv one_ne_zero).const_smul t)
 
 
 section vol_poly
@@ -690,8 +690,8 @@ lemma Polynomial.not_one_add_X_sq_eq_sq : ¬ (∃ P : ℝ[X], 1 + X ^ 2 = P ^ 2)
   let ⟨a, b, hab⟩ := (exists_eq_X_add_C_of_natDegree_le_one (by rw [P_natDegree_eq_one]) :
     ∃ a b, P = C a * X + C b)
   rw [hab] at hP
-  have h0 := congrArg (coeff · 0) hP
-  have h1 := congrArg (coeff · 1) hP
+  have h0 := congrArg (·.coeff 0) hP
+  have h1 := congrArg (·.coeff 1) hP
   simp [sq] at h0
   simp [add_sq, mul_pow, coeff_mul_X_pow', ← map_pow] at h1
   rw [← C_1, coeff_C_of_ne_zero (one_ne_zero)] at h1
@@ -803,7 +803,7 @@ theorem hairy_ball_diff (contDiff_v : ContDiff ℝ 1 v)
   let v' : E n → E n := fun x => ‖x‖ • ‖v (‖x‖⁻¹ • x)‖⁻¹ • v (‖x‖⁻¹ • x)
   have contDiffOn_v : ContDiffOn ℝ 1 (fun x => v (‖x‖⁻¹ • x)) {0}ᶜ :=
     contDiff_v.comp_contDiffOn (ContDiffOn.smul ((contDiffOn_inv ℝ).comp
-    (ContDiffOn.norm ℝ contDiffOn_id (fun _ => id)) (fun _ => by simp; exact id)) contDiffOn_id)
+    (ContDiffOn.norm ℝ contDiffOn_id (fun _ => id)) (fun _ => by simp)) contDiffOn_id)
   have v'ContDiff : ContDiffOn ℝ 1 v' {0}ᶜ :=
     ContDiffOn.smul (fun x hx => (contDiffAt_norm ℝ hx).contDiffWithinAt)
     (ContDiffOn.smul ((contDiffOn_inv ℝ).comp (ContDiffOn.norm ℝ contDiffOn_v v_ne_zero)
