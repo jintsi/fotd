@@ -7,6 +7,7 @@ import Mathlib.Analysis.Real.Cardinality
 import Mathlib.Data.Nat.Prime.Nth
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Data.List.Palindrome
+import Mathlib.NumberTheory.Real.Irrational
 
 /-- Fact Of The Day 3: 31 is the only prime that is divisible by 31. -/
 theorem fotd3 {p : Nat.Primes} : 31 ∣ p.val ↔ p = ⟨31, by decide⟩ :=
@@ -172,7 +173,7 @@ theorem fotd94 {c : EuclideanSpace ℝ (Fin 3)} {r : ℝ} (h : 0 < r) :
     have := Cardinal.mem_range_aleph_iff.mpr (Cardinal.aleph0_le_mk (Metric.sphere c r))
     simp [-Cardinal.range_aleph] at this; rcases this with ⟨o, h⟩
     refine ⟨o, ?_, h.symm⟩
-    simp [zero_lt_iff]; intro rfl; simp at h
+    simp [pos_iff_ne_zero]; intro rfl; simp at h
     exact ne_of_lt (Cardinal.aleph0_lt_mk) h
   suffices Uncountable (Set.Ico 0 (2 * Real.pi)) by
     apply Function.Injective.uncountable (α := Set.Ico 0 (2 * Real.pi)); swap
@@ -282,8 +283,9 @@ theorem fotd249 {vacuously_true : ℕ → Prop} [DecidablePred vacuously_true] :
 
 /-- Fact Of The Day 257: Boiling something for a total of a rational number of seconds is much
 harder than people would have thought a while ago. -/
-theorem fotd257 : MeasureTheory.volume (Set.range Rat.cast : Set ℝ) = 0 :=
-  (Set.countable_range _).measure_zero _
+theorem fotd257 : ∀ᵐ r, Irrational r := by
+  simp [MeasureTheory.ae_iff, Irrational, -Set.mem_range]
+  exact (Set.countable_range _).measure_zero _
 
 /-- Fact Of The Day 268: 31 is the only prime if you declare all primes equal. -/
 theorem fotd268 : Subsingleton Nat.Primes → ∀ p, Nat.Prime p → p = 31 := by
@@ -293,3 +295,9 @@ theorem fotd268 : Subsingleton Nat.Primes → ∀ p, Nat.Prime p → p = 31 := b
 theorem fotd273 : ∃ s : ZFSet, ∀ t, t ∈ s ↔ t ∈ t := by use ∅; simp [ZFSet.mem_irrefl]
 
 /-! TODO: FOTD 279  -/
+
+/-- Fact Of The Day 291: 291 is not a prime or (Larry did not remember his fictional nature, but
+his subconsciousness did, and it screamed out of frustration. This story is indeed told in an
+annoyingly messy way, if you can even call it a story). -/
+theorem fotd291 : ¬Nat.Prime 291 ∨ p := by
+  apply Or.inl; apply Nat.not_prime_of_dvd_of_lt (m := 3) <;> decide
