@@ -12,12 +12,10 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
       - uses: leanprover/lean-action@v1
         with:
           use-github-cache: false
-      # - uses: leanprover-community/docgen-action@main
-      # workaround for https://github.com/leanprover-community/docgen-action/issues/33
-      - uses: dwrensha/docgen-action@8c6b36d29c4d59d70087597ff2ddb2d1b96f02d6
+      - uses: leanprover-community/docgen-action@main
